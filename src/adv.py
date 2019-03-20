@@ -1,4 +1,6 @@
 from room import Room
+from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -33,11 +35,31 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# Declare all items
+
+item = {
+    'rock': Item("rock", "A large stone might be great as a weapon or weight"),
+
+    'lantern': Item("lantern", "A dim lantern looks like won't last for very long without more fuel"),
+
+    'key': Item("key", "A key... Wonder what it opens?"),
+
+    'coin': Item("coin", "A gold coin. Looks like whoever took the treasure missed something on the way out."),
+}
+
+# Add items to rooms
+
+room['outside'].add(item['rock'])
+room['narrow'].add(item['lantern'])
+room['foyer'].add(item['key'])
+room['treasure'].add(item['coin'])
+
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
+player = Player(room['outside'])
 
 # Write a loop that:
 #
