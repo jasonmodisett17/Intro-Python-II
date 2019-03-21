@@ -71,3 +71,50 @@ player = Player(room['outside'])
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+while True:
+
+    # Presents info about current location, room inventory, player inventory and what can be done next.
+    print("\n")
+    print(player.roomCurrentlyIn.name)
+    print("----------------------------")
+    print(player.roomCurrentlyIn.description)
+    print(player.roomCurrentlyIn.itemsInventory())
+    print(player.inventory())
+    print("Things you can do: move (n, s, w, e), quit (q) or action (take/drop item)\n")
+    userInput = input(">> What would you like to do? ")
+
+    inputWords = userInput.split(' ')
+
+    if len(inputWords) == 1:
+        if userInput in ['n', 'north']:
+            player.move_n()
+        elif userInput in ['s', 'south']:
+            player.move_s()
+        elif userInput in ['w', 'west']:
+            player.move_w()
+        elif userInput in ['e', 'east']:
+            player.move_e()
+        elif userInput in ['q', 'quit']:
+            quit()
+        elif userInput in ['i', 'inventory']:
+            print(player.inventory())
+        else:
+            print("\nLooks like that's not a direction.")
+    elif len(inputWords) == 2:
+        if inputWords[0] == "get" or inputWords[0] == "take":
+            for item in player.roomCurrentlyIn.items:
+                if item.name == inputWords[1]:
+                    player.roomCurrentlyIn.remove(item)
+                    player.get(item)
+                    item.on_take()
+                else:
+                    print("\nNo item by that name exists.")
+        elif inputWords[0] == "drop":
+            for item in player.items:
+                if item.name == inputWords[1]:
+                    player.drop(item)
+                    item.on_drop()
+                    player.roomCurrentlyIn.add(item)
+    else:
+        print("\nNot a valid input. Try again.")
